@@ -1009,6 +1009,7 @@ export default function HSILHackathon() {
             </div>
           </div>
           <div className="nav-links">
+            {activePage !== "home" && <a onClick={goHome}>Home</a>}
             <a onClick={() => scrollToSection("about")}>About</a>
             <a onClick={() => scrollToSection("program")}>Program</a>
             <a onClick={() => scrollToSection("challenges")}>Challenges</a>
@@ -1028,6 +1029,7 @@ export default function HSILHackathon() {
           <div className="close-btn" onClick={() => setIsMobileMenuOpen(false)}>
             <X size={32} />
           </div>
+          {activePage !== "home" && <a onClick={goHome}>Home</a>}
           <a onClick={() => scrollToSection("about")}>About</a>
           <a onClick={() => scrollToSection("program")}>Program</a>
           <a onClick={() => scrollToSection("challenges")}>Challenges</a>
