@@ -1,4 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+import {
+  Globe, Dna, Users, Rocket, Mic, BrainCircuit, ClipboardList,
+  Lightbulb, Hammer, Target, Scale, Trophy, GraduationCap, Building2,
+  Shuffle, Zap, Microscope, Sparkles, X, ShieldX, ArrowLeft,
+  CalendarOff, Mail, ExternalLink, HeartPulse, Clock, BookOpen, Menu
+} from "lucide-react";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap');
@@ -41,6 +47,8 @@ const styles = `
     letter-spacing: 0.04em; color: var(--text);
   }
   .nav-logo span { color: var(--crimson); }
+  .nav-logos { display: flex; gap: 1.5rem; align-items: center; }
+  .nav-logos img { height: 32px; width: auto; object-fit: contain; }
   .nav-links { display: flex; gap: 2.5rem; align-items: center; }
   .nav-links a {
     font-size: 0.78rem; font-weight: 500;
@@ -54,6 +62,30 @@ const styles = `
     color: white !important;
     padding: 0.5rem 1.4rem !important;
     border-radius: 2px;
+  }
+  
+  .mobile-nav-toggle { display: none; cursor: pointer; color: var(--text); }
+
+  .mobile-menu-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+    z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .mobile-menu-overlay.open { opacity: 1; pointer-events: auto; }
+  .mobile-menu-card {
+    position: fixed; top: 0; right: 0; bottom: 0; width: 300px; max-width: 80vw;
+    background: #ffffff; color: var(--dark); z-index: 1001;
+    transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; flex-direction: column; padding: 2rem; box-shadow: -4px 0 24px rgba(0,0,0,0.2);
+  }
+  .mobile-menu-card.open { transform: translateX(0); }
+  .mobile-menu-card .close-btn { align-self: flex-end; margin-bottom: 2rem; cursor: pointer; color: var(--dark); }
+  .mobile-menu-card a {
+    font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--dark); text-decoration: none; padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.08);
+    cursor: pointer;
+  }
+  .mobile-menu-card .nav-cta {
+    margin-top: 2rem; text-align: center; border-radius: 4px; padding: 1rem !important;
   }
 
   .hero {
@@ -104,6 +136,7 @@ const styles = `
     font-family: 'Outfit', sans-serif; font-size: 0.78rem;
     font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
     cursor: pointer; transition: all 0.2s; border-radius: 2px;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
   }
   .hero-btn:hover { background: var(--crimson-light); transform: translateY(-1px); }
   .hero-scroll {
@@ -151,7 +184,8 @@ const styles = `
   .feature-icon {
     width: 36px; height: 36px; min-width: 36px;
     background: rgba(165,28,48,0.12); border-radius: 4px;
-    display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--crimson);
   }
   .feature-text h4 { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.3rem; }
   .feature-text p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
@@ -170,9 +204,10 @@ const styles = `
     width: 56px; height: 56px; border-radius: 50%;
     background: var(--card); border: 2px solid var(--border);
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem; margin-bottom: 1rem; position: relative; z-index: 1;
+    margin-bottom: 1rem; position: relative; z-index: 1;
+    color: var(--muted);
   }
-  .timeline-item.active .timeline-dot { border-color: var(--crimson); background: rgba(165,28,48,0.15); }
+  .timeline-item.active .timeline-dot { border-color: var(--crimson); background: rgba(165,28,48,0.15); color: var(--crimson); }
   .timeline-date { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--crimson); margin-bottom: 0.4rem; }
   .timeline-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
   .timeline-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
@@ -204,7 +239,7 @@ const styles = `
   .program-day-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .program-event { display: flex; gap: 1.5rem; padding: 1.2rem 0; border-bottom: 1px solid var(--border); }
   .program-event:last-child { border-bottom: none; }
-  .program-event-icon { width: 40px; height: 40px; min-width: 40px; background: rgba(165,28,48,0.1); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+  .program-event-icon { width: 40px; height: 40px; min-width: 40px; background: rgba(165,28,48,0.1); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--crimson); }
   .program-event h4 { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.25rem; }
   .program-event p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
 
@@ -218,7 +253,7 @@ const styles = `
   .team-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
   .team-card { background: var(--card); border: 1px solid var(--border); padding: 2rem; border-radius: 4px; transition: border-color 0.2s; }
   .team-card:hover { border-color: rgba(165,28,48,0.4); }
-  .team-card-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .team-card-icon { margin-bottom: 1rem; color: var(--crimson); }
   .team-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; margin-bottom: 0.75rem; }
   .team-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
 
@@ -242,7 +277,7 @@ const styles = `
   .tier-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; margin-bottom: 2rem; }
   .tier-perks { list-style: none; text-align: left; margin-bottom: 2rem; }
   .tier-perks li { font-size: 0.8rem; color: var(--muted); padding: 0.5rem 0; border-bottom: 1px solid rgba(42,42,46,0.5); display: flex; gap: 0.75rem; align-items: flex-start; }
-  .tier-perks li::before { content: '→'; color: var(--crimson); flex-shrink: 0; }
+  .tier-perks li::before { content: '\\2192'; color: var(--crimson); flex-shrink: 0; }
   .tier-btn { width: 100%; background: transparent; border: 1px solid var(--crimson); color: var(--crimson); padding: 0.8rem; font-family: 'Outfit', sans-serif; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; border-radius: 2px; }
   .tier-btn:hover, .sponsor-tier.featured .tier-btn { background: var(--crimson); color: white; }
 
@@ -263,8 +298,85 @@ const styles = `
   .badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(165,28,48,0.12); color: var(--crimson); padding: 0.3rem 0.8rem; border-radius: 2px; border: 1px solid rgba(165,28,48,0.2); }
   .badge.teal { background: rgba(74,158,138,0.1); color: var(--accent); border-color: rgba(74,158,138,0.2); }
 
+  /* Applications Closed Page */
+  .closed-page {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    font-family: 'Outfit', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+  }
+  .closed-hero {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 8rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .closed-hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(165,28,48,0.12) 0%, transparent 60%),
+                var(--dark);
+  }
+  .closed-icon-ring {
+    position: relative; z-index: 1;
+    width: 100px; height: 100px; border-radius: 50%;
+    border: 2px solid rgba(165,28,48,0.3);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 2.5rem;
+    background: rgba(165,28,48,0.06);
+  }
+  .closed-icon-ring svg { color: var(--crimson); }
+  .closed-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300; line-height: 1.05;
+    position: relative; z-index: 1;
+    margin-bottom: 1.5rem;
+  }
+  .closed-title em { font-style: italic; color: var(--crimson); }
+  .closed-subtitle {
+    font-size: 1.05rem; color: var(--muted); line-height: 1.7;
+    max-width: 520px; position: relative; z-index: 1;
+    margin-bottom: 3rem;
+  }
+  .closed-back {
+    position: relative; z-index: 1;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text); padding: 0.8rem 2rem;
+    font-family: 'Outfit', sans-serif; font-size: 0.78rem;
+    font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s; border-radius: 2px;
+    text-decoration: none;
+  }
+  .closed-back:hover { border-color: var(--crimson); color: var(--crimson); }
+  .closed-info-section {
+    background: var(--card); border-top: 1px solid var(--border);
+    padding: 5rem 4rem;
+  }
+  .closed-info-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+    max-width: 960px; margin: 0 auto;
+  }
+  .closed-info-card {
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 2rem; transition: border-color 0.2s;
+  }
+  .closed-info-card:hover { border-color: rgba(165,28,48,0.4); }
+  .closed-info-card svg { color: var(--crimson); margin-bottom: 1rem; }
+  .closed-info-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 600; margin-bottom: 0.6rem;
+  }
+  .closed-info-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .closed-footer {
+    text-align: center; padding: 2rem 4rem;
+    border-top: 1px solid var(--border);
+  }
+  .closed-footer p { font-size: 0.72rem; color: var(--muted); }
+
   @media (max-width: 1024px) {
-    .nav { padding: 0 2rem; }
+    .nav { padding: 0 2rem; position: sticky; top: 0; background: var(--dark); }
     .section { padding: 5rem 2rem; }
     .hero { padding: 0 2rem 5rem; }
     .about-grid, .program-cols { grid-template-columns: 1fr; gap: 3rem; }
@@ -276,6 +388,10 @@ const styles = `
     .timeline::before { display: none; }
     .footer { grid-template-columns: 1fr; gap: 2rem; }
     .nav-links { display: none; }
+    .nav-logos { display: none; }
+    .mobile-nav-toggle { display: block; }
+    .closed-info-grid { grid-template-columns: 1fr; }
+    .closed-info-section { padding: 4rem 2rem; }
   }
   @media (max-width: 640px) {
     .challenges-grid, .team-cards, .resources-grid { grid-template-columns: 1fr; }
@@ -299,11 +415,11 @@ const challenges = [
 ];
 
 const timelineItems = [
-  { date: "Apr 10–11", name: "Hackathon", desc: "Hub Judging · ~50 teams", icon: "⚡", active: true },
-  { date: "Apr 20 – May 1", name: "Bootcamp I", desc: "HSIL Judging · 20 teams", icon: "🎯", active: false },
-  { date: "May 4–15", name: "Bootcamp II", desc: "Global Judging · 10 teams", icon: "🚀", active: false },
-  { date: "May 18 – Jun 12", name: "Venture Immersion", desc: "4-week intensive · 10 teams", icon: "🔬", active: false },
-  { date: "Jun 19", name: "Demo Day", desc: "Pitch to investors", icon: "🏆", active: false },
+  { date: "Apr 10\u201311", name: "Hackathon", desc: "Hub Judging \u00b7 ~50 teams", icon: Zap, active: true },
+  { date: "Apr 20 \u2013 May 1", name: "Bootcamp I", desc: "HSIL Judging \u00b7 20 teams", icon: Target, active: false },
+  { date: "May 4\u201315", name: "Bootcamp II", desc: "Global Judging \u00b7 10 teams", icon: Rocket, active: false },
+  { date: "May 18 \u2013 Jun 12", name: "Venture Immersion", desc: "4-week intensive \u00b7 10 teams", icon: Microscope, active: false },
+  { date: "Jun 19", name: "Demo Day", desc: "Pitch to investors", icon: Trophy, active: false },
 ];
 
 const judgingCriteria = [
@@ -316,19 +432,131 @@ const judgingCriteria = [
 ];
 
 const pitchSteps = [
-  { time: "10 sec", name: "Introduction", desc: "Introduce your team memorably — people recall beginnings and endings.", pct: 5.5 },
+  { time: "10 sec", name: "Introduction", desc: "Introduce your team memorably \u2014 people recall beginnings and endings.", pct: 5.5 },
   { time: "20 sec", name: "Problem Statement", desc: "Whose lives improve? What tangible impact will your solution have?", pct: 11 },
   { time: "1 min", name: "Product", desc: "Explain the technical aspects with enough detail to show expertise.", pct: 33 },
   { time: "1 min", name: "Demo", desc: "Live demo or visualization of design, functionality, and key features.", pct: 33 },
   { time: "30 sec", name: "Wrap-up", desc: "Summarize key points and close with a strong, lasting statement.", pct: 17.5 },
 ];
 
+const aboutFeatures = [
+  { icon: Globe, title: "Global Multi-Hub Format", text: "In-person events at hubs across multiple continents, each managed by a dedicated local organizer at no cost to participants." },
+  { icon: Dna, title: "AI & Health Systems Focus", text: "All solutions must leverage AI to address real healthcare challenges \u2014 from diagnostics to workforce shortages." },
+  { icon: Users, title: "Expert Mentorship", text: "Access to mentors with clinical, engineering, public health, business, and design expertise throughout both days." },
+  { icon: Rocket, title: "8-Week Incubation Path", text: "Winners advance to Bootcamp, Venture Building Immersion, and a Global Demo Day pitching to investors." },
+];
+
+const day1Events = [
+  { icon: Mic, title: "Global Welcome Session", desc: "Online kick-off connecting all hubs worldwide." },
+  { icon: BrainCircuit, title: "Opening Keynote Panel", desc: "\u201CAI-Driven Digital Solutions for Building High-Value Health Systems\u201D \u2014 moderated by Prof. Rifat Atun, Harvard University." },
+  { icon: ClipboardList, title: "Hack 101 Briefing", desc: "Instructions, mentor introductions, and hackathon reminders." },
+  { icon: Users, title: "Team Formation & Ideation", desc: "Form teams of 3\u20135, select a challenge, and begin developing your solution concept." },
+  { icon: Lightbulb, title: "Hack: Building Begins", desc: "Intensive development session with on-site mentor access." },
+];
+
+const day2Events = [
+  { icon: Sparkles, title: "Keynote: Women in HealthTech", desc: "\u201CEmpowering Women in HealthTech\u201D \u2014 leading female innovators share insights on diversity and inclusion in health technology." },
+  { icon: Hammer, title: "Continued Hacking", desc: "Final development sprint and mentor consultation sessions, sign-ups via Slack." },
+  { icon: Target, title: "Pitch Preparation", desc: "Refine your 3-minute presentation with mentor feedback." },
+  { icon: Scale, title: "Judging & Pitches", desc: "3-minute pitches to a panel of 3\u20135 local judges with clinical, technical, and business expertise." },
+  { icon: Trophy, title: "Awards Ceremony", desc: "Winners announced and advanced to the 8-week venture incubation program." },
+];
+
+const teamCards = [
+  { icon: GraduationCap, title: "Students & Early Professionals", desc: "Primarily geared toward early-stage innovators. Students, recent graduates, and young professionals are all encouraged to apply." },
+  { icon: Building2, title: "Teams & Startups", desc: "Individuals, teams of 3\u20135, or early-stage startups are welcome. Both non-profit and for-profit ideas are accepted." },
+  { icon: Shuffle, title: "Diverse Skill Sets", desc: "Strongly recommend cross-disciplinary teams \u2014 combining medicine, engineering, public health, design, and business backgrounds." },
+  { icon: Globe, title: "English Proficiency", desc: "At least 1\u20132 members should be proficient in English to fully engage in post-hackathon Bootcamp and Venture Building programs." },
+  { icon: Lightbulb, title: "No Prototype Required", desc: "Concept-stage ideas are fully welcome. Judges assess the clarity and potential of your idea, not the completeness of a prototype." },
+  { icon: BrainCircuit, title: "AI-Focused Solutions", desc: "All solutions should meaningfully leverage AI. Ethical considerations around bias, privacy, and equity must be addressed." },
+];
+
+function ApplicationsClosed({ onBack }) {
+  return (
+    <div className="closed-page">
+      <nav className="nav">
+        <div className="nav-logo"><span>HSIL</span> Hackathon 2026</div>
+        <div className="nav-links">
+          <a onClick={onBack}>Back to Home</a>
+        </div>
+      </nav>
+
+      <div className="closed-hero">
+        <div className="closed-hero-bg" />
+        <div className="closed-icon-ring">
+          <X size={40} strokeWidth={1.5} />
+        </div>
+        <h1 className="closed-title">
+          Applications Are<br /><em>Now Closed</em>
+        </h1>
+        <p className="closed-subtitle">
+          Thank you for your interest in the 7th Annual HSIL Hackathon. The application window for the April 10–11, 2026 event has ended. We received an overwhelming number of submissions from innovators across every continent.
+        </p>
+        <button className="closed-back" onClick={onBack}>
+          <ArrowLeft size={16} /> Return to Homepage
+        </button>
+      </div>
+
+      <div className="closed-info-section">
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <div className="section-label" style={{ justifyContent: "center" }}>What's Next</div>
+          <h2 className="section-title">Stay <em>Connected</em></h2>
+        </div>
+        <div className="closed-info-grid">
+          <div className="closed-info-card">
+            <Clock size={24} />
+            <h3>Follow the Event</h3>
+            <p>The hackathon takes place April 10–11, 2026 across global hubs. Follow along on social media for live updates, highlights, and winning announcements.</p>
+          </div>
+          <div className="closed-info-card">
+            <BookOpen size={24} />
+            <h3>Explore the Challenges</h3>
+            <p>Review the 11 AI challenge tracks on our homepage. Understanding the problem space will prepare you for future opportunities with HSIL.</p>
+          </div>
+          <div className="closed-info-card">
+            <Mail size={24} />
+            <h3>Get Notified</h3>
+            <p>Interested in future HSIL events and the 8th Annual Hackathon? Visit the HSIL website to stay informed about upcoming programs and opportunities.</p>
+          </div>
+        </div>
+        <div style={{ textAlign: "center", marginTop: "3rem" }}>
+          <a
+            href="https://www.hsph.harvard.edu/health-systems-innovationlab/"
+            target="_blank"
+            rel="noreferrer"
+            className="hero-btn"
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
+          >
+            Visit HSIL Website <ExternalLink size={14} />
+          </a>
+        </div>
+      </div>
+
+      <div className="closed-footer">
+        <p>&copy; 2026 Health Systems Innovation Lab, Harvard University. All rights reserved.</p>
+      </div>
+    </div>
+  );
+}
+
 export default function HSILHackathon() {
   const [openChallenge, setOpenChallenge] = useState(null);
+  const [showClosed, setShowClosed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setIsMobileMenuOpen(false);
   };
+
+  if (showClosed) {
+    return (
+      <>
+        <style>{styles}</style>
+        <ApplicationsClosed onBack={() => setShowClosed(false)} />
+      </>
+    );
+  }
 
   return (
     <>
@@ -337,16 +565,40 @@ export default function HSILHackathon() {
 
         {/* NAV */}
         <nav className="nav">
-          <div className="nav-logo"><span>HSIL</span> Hackathon 2026</div>
+          <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+            <div className="nav-logo"><span>HSIL</span> Hackathon 2026</div>
+            <div className="nav-logos">
+              <img src="/images/logos/BabcockUni-logo.png" alt="Babcock" style={{ height: "32px" }} />
+              <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" style={{ height: "32px" }} />
+              <img src="/images/logos/BEDC-logo.png" alt="BEDC" style={{ height: "32px" }} />
+            </div>
+          </div>
           <div className="nav-links">
             <a onClick={() => scrollTo("about")}>About</a>
             <a onClick={() => scrollTo("program")}>Program</a>
             <a onClick={() => scrollTo("challenges")}>Challenges</a>
             <a onClick={() => scrollTo("judging")}>Judging</a>
             <a onClick={() => scrollTo("sponsors")}>Sponsors</a>
-            <a className="nav-cta" onClick={() => scrollTo("apply")}>Apply Now</a>
+            <a className="nav-cta" onClick={() => setShowClosed(true)}>Apply Now</a>
+          </div>
+          <div className="mobile-nav-toggle" onClick={() => setIsMobileMenuOpen(true)}>
+            <Menu size={28} />
           </div>
         </nav>
+
+        {/* MOBILE OVERLAY */}
+        <div className={`mobile-menu-overlay ${isMobileMenuOpen ? "open" : ""}`} onClick={() => setIsMobileMenuOpen(false)} />
+        <div className={`mobile-menu-card ${isMobileMenuOpen ? "open" : ""}`}>
+          <div className="close-btn" onClick={() => setIsMobileMenuOpen(false)}>
+            <X size={32} />
+          </div>
+          <a onClick={() => scrollTo("about")}>About</a>
+          <a onClick={() => scrollTo("program")}>Program</a>
+          <a onClick={() => scrollTo("challenges")}>Challenges</a>
+          <a onClick={() => scrollTo("judging")}>Judging</a>
+          <a onClick={() => scrollTo("sponsors")}>Sponsors</a>
+          <a className="nav-cta" onClick={() => { setIsMobileMenuOpen(false); setShowClosed(true); }}>Apply Now</a>
+        </div>
 
         {/* HERO */}
         <section className="hero">
@@ -377,7 +629,7 @@ export default function HSILHackathon() {
               <span className="hero-stat-label">Multi-Hub Event</span>
             </div>
             <div className="hero-divider" />
-            <button className="hero-btn" onClick={() => scrollTo("apply")}>Apply to Participate</button>
+            <button className="hero-btn" onClick={() => setShowClosed(true)}>Apply to Participate</button>
           </div>
           <div className="hero-scroll">
             <div className="hero-scroll-line" />
@@ -401,14 +653,9 @@ export default function HSILHackathon() {
               </div>
             </div>
             <div className="about-features">
-              {[
-                { icon: "🌍", title: "Global Multi-Hub Format", text: "In-person events at hubs across multiple continents, each managed by a dedicated local organizer at no cost to participants." },
-                { icon: "🧬", title: "AI & Health Systems Focus", text: "All solutions must leverage AI to address real healthcare challenges — from diagnostics to workforce shortages." },
-                { icon: "🤝", title: "Expert Mentorship", text: "Access to mentors with clinical, engineering, public health, business, and design expertise throughout both days." },
-                { icon: "🚀", title: "8-Week Incubation Path", text: "Winners advance to Bootcamp, Venture Building Immersion, and a Global Demo Day pitching to investors." },
-              ].map((f, i) => (
+              {aboutFeatures.map((f, i) => (
                 <div className="about-feature" key={i}>
-                  <div className="feature-icon">{f.icon}</div>
+                  <div className="feature-icon"><f.icon size={18} /></div>
                   <div className="feature-text">
                     <h4>{f.title}</h4>
                     <p>{f.text}</p>
@@ -428,30 +675,18 @@ export default function HSILHackathon() {
           <div className="program-cols">
             <div>
               <div className="program-day-label">Day 1 · Friday, April 10</div>
-              {[
-                { icon: "🎙️", title: "Global Welcome Session", desc: "Online kick-off connecting all hubs worldwide." },
-                { icon: "🤖", title: "Opening Keynote Panel", desc: '"AI-Driven Digital Solutions for Building High-Value Health Systems" — moderated by Prof. Rifat Atun, Harvard University.' },
-                { icon: "📋", title: "Hack 101 Briefing", desc: "Instructions, mentor introductions, and hackathon reminders." },
-                { icon: "👥", title: "Team Formation & Ideation", desc: "Form teams of 3–5, select a challenge, and begin developing your solution concept." },
-                { icon: "💡", title: "Hack: Building Begins", desc: "Intensive development session with on-site mentor access." },
-              ].map((e, i) => (
+              {day1Events.map((e, i) => (
                 <div className="program-event" key={i}>
-                  <div className="program-event-icon">{e.icon}</div>
+                  <div className="program-event-icon"><e.icon size={18} /></div>
                   <div><h4>{e.title}</h4><p>{e.desc}</p></div>
                 </div>
               ))}
             </div>
             <div>
               <div className="program-day-label">Day 2 · Saturday, April 11</div>
-              {[
-                { icon: "♀️", title: "Keynote: Women in HealthTech", desc: '"Empowering Women in HealthTech" — leading female innovators share insights on diversity and inclusion in health technology.' },
-                { icon: "🔨", title: "Continued Hacking", desc: "Final development sprint and mentor consultation sessions, sign-ups via Slack." },
-                { icon: "🎯", title: "Pitch Preparation", desc: "Refine your 3-minute presentation with mentor feedback." },
-                { icon: "⚖️", title: "Judging & Pitches", desc: "3-minute pitches to a panel of 3–5 local judges with clinical, technical, and business expertise." },
-                { icon: "🏆", title: "Awards Ceremony", desc: "Winners announced and advanced to the 8-week venture incubation program." },
-              ].map((e, i) => (
+              {day2Events.map((e, i) => (
                 <div className="program-event" key={i}>
-                  <div className="program-event-icon">{e.icon}</div>
+                  <div className="program-event-icon"><e.icon size={18} /></div>
                   <div><h4>{e.title}</h4><p>{e.desc}</p></div>
                 </div>
               ))}
@@ -466,7 +701,7 @@ export default function HSILHackathon() {
           <div className="timeline">
             {timelineItems.map((item, i) => (
               <div className={`timeline-item ${item.active ? "active" : ""}`} key={i}>
-                <div className="timeline-dot">{item.icon}</div>
+                <div className="timeline-dot"><item.icon size={22} /></div>
                 <div className="timeline-date">{item.date}</div>
                 <div className="timeline-name">{item.name}</div>
                 <div className="timeline-desc">{item.desc}</div>
@@ -510,16 +745,9 @@ export default function HSILHackathon() {
           <div className="section-label">Team & Eligibility</div>
           <h2 className="section-title">Who Should<br /><em>Apply?</em></h2>
           <div className="team-cards">
-            {[
-              { icon: "🎓", title: "Students & Early Professionals", desc: "Primarily geared toward early-stage innovators. Students, recent graduates, and young professionals are all encouraged to apply." },
-              { icon: "🏢", title: "Teams & Startups", desc: "Individuals, teams of 3–5, or early-stage startups are welcome. Both non-profit and for-profit ideas are accepted." },
-              { icon: "🔀", title: "Diverse Skill Sets", desc: "Strongly recommend cross-disciplinary teams — combining medicine, engineering, public health, design, and business backgrounds." },
-              { icon: "🌐", title: "English Proficiency", desc: "At least 1–2 members should be proficient in English to fully engage in post-hackathon Bootcamp and Venture Building programs." },
-              { icon: "💡", title: "No Prototype Required", desc: "Concept-stage ideas are fully welcome. Judges assess the clarity and potential of your idea, not the completeness of a prototype." },
-              { icon: "🤖", title: "AI-Focused Solutions", desc: "All solutions should meaningfully leverage AI. Ethical considerations around bias, privacy, and equity must be addressed." },
-            ].map((c, i) => (
+            {teamCards.map((c, i) => (
               <div className="team-card" key={i}>
-                <div className="team-card-icon">{c.icon}</div>
+                <div className="team-card-icon"><c.icon size={28} /></div>
                 <h3>{c.title}</h3>
                 <p>{c.desc}</p>
               </div>
@@ -647,7 +875,7 @@ export default function HSILHackathon() {
             Contact your local Hub organizer to confirm your participation. Accepted participants receive Slack access and pre-event Q&A session details at least two weeks before the event.
           </p>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-            <button className="hero-btn">Apply as Participant</button>
+            <button className="hero-btn" onClick={() => setShowClosed(true)}>Apply as Participant</button>
             <button className="hero-btn" style={{ background: "transparent", border: "1px solid var(--crimson)", color: "var(--crimson)" }} onClick={() => scrollTo("sponsors")}>
               Become a Sponsor
             </button>
@@ -682,8 +910,18 @@ export default function HSILHackathon() {
               </p>
             </div>
           </div>
+
+          <div style={{ gridColumn: "1 / -1", textAlign: "center", marginTop: "2rem", paddingBottom: "2rem" }}>
+            <p style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.5rem" }}>Powered By</p>
+            <div style={{ display: "flex", justifyContent: "center", gap: "4rem", alignItems: "center", flexWrap: "wrap", background: "white", padding: "2rem", borderRadius: "8px" }}>
+              <img src="/images/logos/BabcockUni-logo.png" alt="Babcock University" style={{ height: "48px", objectFit: "contain" }} />
+              <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" style={{ height: "48px", objectFit: "contain" }} />
+              <img src="/images/logos/BEDC-logo.png" alt="BEDC" style={{ height: "48px", objectFit: "contain" }} />
+            </div>
+          </div>
+
           <div className="footer-bottom">
-            <p>© 2026 Health Systems Innovation Lab, Harvard University. All rights reserved.</p>
+            <p>&copy; 2026 Health Systems Innovation Lab, Harvard University. All rights reserved.</p>
             <div className="footer-links">
               <a href="#">Privacy Policy</a>
               <a href="#">Contact</a>
