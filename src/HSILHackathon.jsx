@@ -60,10 +60,11 @@ const styles = `
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
+    padding-top: 72px;
   }
 
   .nav {
-    position: sticky; top: 0; left: 0; right: 0; z-index: 100;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 4rem;
     height: 72px;
@@ -738,7 +739,6 @@ const styles = `
 
   @media (max-width: 1024px) {
     .nav { padding: 0 2rem; position: fixed; top: 0; left: 0; right: 0; background: var(--nav-gray); }
-    .hsil-root, .closed-page, .sponsor-contact-page, .schedule-page { padding-top: 72px; }
     .section { padding: 5rem 2rem; }
     .hero { padding: 0 2rem 5rem; }
     .about-grid, .program-cols { grid-template-columns: 1fr; gap: 3rem; }
@@ -908,7 +908,7 @@ function SchedulePage({ onBack }) {
           Event <em>Schedule</em>
         </h1>
         <p style={{ color: "var(--muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 520, margin: "0 auto 2rem" }}>
-          Two days of intensive innovation at the 7th Annual HSIL Hackathon, April 9\u201310, 2026.
+          Two days of intensive innovation at the 7th Annual HSIL Hackathon, April 9–10, 2026.
         </p>
         <button className="schedule-nav-back" onClick={onBack}>
           <ArrowLeft size={14} /> Back to Home
