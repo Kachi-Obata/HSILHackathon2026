@@ -908,7 +908,7 @@ function SchedulePage({ onBack }) {
           Event <em>Schedule</em>
         </h1>
         <p style={{ color: "var(--muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 520, margin: "0 auto 2rem" }}>
-          Two days of intensive innovation at the 7th Annual HSIL Hackathon, April 9\u201310, 2026.
+          Two days of intensive innovation at the 7th Annual HSIL Hackathon, April 9–10, 2026.
         </p>
         <button className="schedule-nav-back" onClick={onBack}>
           <ArrowLeft size={14} /> Back to Home
