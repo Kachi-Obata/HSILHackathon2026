@@ -3,7 +3,7 @@ import {
   Globe, Dna, Users, Rocket, Mic, BrainCircuit, ClipboardList,
   Lightbulb, Hammer, Target, Scale, Trophy, GraduationCap, Building2,
   Shuffle, Zap, Microscope, Sparkles, X, ShieldX, ArrowLeft,
-  CalendarOff, Mail, ExternalLink, HeartPulse, Clock, BookOpen
+  CalendarOff, Mail, ExternalLink, HeartPulse, Clock, BookOpen, Menu
 } from "lucide-react";
 
 const styles = `
@@ -47,6 +47,8 @@ const styles = `
     letter-spacing: 0.04em; color: var(--text);
   }
   .nav-logo span { color: var(--crimson); }
+  .nav-logos { display: flex; gap: 1.5rem; align-items: center; }
+  .nav-logos img { height: 32px; width: auto; object-fit: contain; }
   .nav-links { display: flex; gap: 2.5rem; align-items: center; }
   .nav-links a {
     font-size: 0.78rem; font-weight: 500;
@@ -60,6 +62,30 @@ const styles = `
     color: white !important;
     padding: 0.5rem 1.4rem !important;
     border-radius: 2px;
+  }
+  
+  .mobile-nav-toggle { display: none; cursor: pointer; color: var(--text); }
+
+  .mobile-menu-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+    z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .mobile-menu-overlay.open { opacity: 1; pointer-events: auto; }
+  .mobile-menu-card {
+    position: fixed; top: 0; right: 0; bottom: 0; width: 300px; max-width: 80vw;
+    background: #ffffff; color: var(--dark); z-index: 1001;
+    transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; flex-direction: column; padding: 2rem; box-shadow: -4px 0 24px rgba(0,0,0,0.2);
+  }
+  .mobile-menu-card.open { transform: translateX(0); }
+  .mobile-menu-card .close-btn { align-self: flex-end; margin-bottom: 2rem; cursor: pointer; color: var(--dark); }
+  .mobile-menu-card a {
+    font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--dark); text-decoration: none; padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.08);
+    cursor: pointer;
+  }
+  .mobile-menu-card .nav-cta {
+    margin-top: 2rem; text-align: center; border-radius: 4px; padding: 1rem !important;
   }
 
   .hero {
@@ -350,7 +376,7 @@ const styles = `
   .closed-footer p { font-size: 0.72rem; color: var(--muted); }
 
   @media (max-width: 1024px) {
-    .nav { padding: 0 2rem; }
+    .nav { padding: 0 2rem; position: sticky; top: 0; background: var(--dark); }
     .section { padding: 5rem 2rem; }
     .hero { padding: 0 2rem 5rem; }
     .about-grid, .program-cols { grid-template-columns: 1fr; gap: 3rem; }
@@ -362,6 +388,8 @@ const styles = `
     .timeline::before { display: none; }
     .footer { grid-template-columns: 1fr; gap: 2rem; }
     .nav-links { display: none; }
+    .nav-logos { display: none; }
+    .mobile-nav-toggle { display: block; }
     .closed-info-grid { grid-template-columns: 1fr; }
     .closed-info-section { padding: 4rem 2rem; }
   }
@@ -514,9 +542,11 @@ function ApplicationsClosed({ onBack }) {
 export default function HSILHackathon() {
   const [openChallenge, setOpenChallenge] = useState(null);
   const [showClosed, setShowClosed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setIsMobileMenuOpen(false);
   };
 
   if (showClosed) {
@@ -535,7 +565,14 @@ export default function HSILHackathon() {
 
         {/* NAV */}
         <nav className="nav">
-          <div className="nav-logo"><span>HSIL</span> Hackathon 2026</div>
+          <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+            <div className="nav-logo"><span>HSIL</span> Hackathon 2026</div>
+            <div className="nav-logos">
+              <img src="/images/logos/BabcockUni-logo.png" alt="Babcock" style={{ height: "32px" }} />
+              <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" style={{ height: "32px" }} />
+              <img src="/images/logos/BEDC-logo.png" alt="BEDC" style={{ height: "32px" }} />
+            </div>
+          </div>
           <div className="nav-links">
             <a onClick={() => scrollTo("about")}>About</a>
             <a onClick={() => scrollTo("program")}>Program</a>
@@ -544,7 +581,24 @@ export default function HSILHackathon() {
             <a onClick={() => scrollTo("sponsors")}>Sponsors</a>
             <a className="nav-cta" onClick={() => setShowClosed(true)}>Apply Now</a>
           </div>
+          <div className="mobile-nav-toggle" onClick={() => setIsMobileMenuOpen(true)}>
+            <Menu size={28} />
+          </div>
         </nav>
+
+        {/* MOBILE OVERLAY */}
+        <div className={`mobile-menu-overlay ${isMobileMenuOpen ? "open" : ""}`} onClick={() => setIsMobileMenuOpen(false)} />
+        <div className={`mobile-menu-card ${isMobileMenuOpen ? "open" : ""}`}>
+          <div className="close-btn" onClick={() => setIsMobileMenuOpen(false)}>
+            <X size={32} />
+          </div>
+          <a onClick={() => scrollTo("about")}>About</a>
+          <a onClick={() => scrollTo("program")}>Program</a>
+          <a onClick={() => scrollTo("challenges")}>Challenges</a>
+          <a onClick={() => scrollTo("judging")}>Judging</a>
+          <a onClick={() => scrollTo("sponsors")}>Sponsors</a>
+          <a className="nav-cta" onClick={() => { setIsMobileMenuOpen(false); setShowClosed(true); }}>Apply Now</a>
+        </div>
 
         {/* HERO */}
         <section className="hero">
@@ -856,6 +910,16 @@ export default function HSILHackathon() {
               </p>
             </div>
           </div>
+
+          <div style={{ gridColumn: "1 / -1", textAlign: "center", marginTop: "2rem", paddingBottom: "2rem" }}>
+            <p style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.5rem" }}>Powered By</p>
+            <div style={{ display: "flex", justifyContent: "center", gap: "4rem", alignItems: "center", flexWrap: "wrap", background: "white", padding: "2rem", borderRadius: "8px" }}>
+              <img src="/images/logos/BabcockUni-logo.png" alt="Babcock University" style={{ height: "48px", objectFit: "contain" }} />
+              <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" style={{ height: "48px", objectFit: "contain" }} />
+              <img src="/images/logos/BEDC-logo.png" alt="BEDC" style={{ height: "48px", objectFit: "contain" }} />
+            </div>
+          </div>
+
           <div className="footer-bottom">
             <p>&copy; 2026 Health Systems Innovation Lab, Harvard University. All rights reserved.</p>
             <div className="footer-links">
