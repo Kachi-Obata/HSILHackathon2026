@@ -49,6 +49,9 @@ const styles = `
   .nav-logo span { color: var(--crimson); }
   .nav-logos { display: flex; gap: 1.5rem; align-items: center; }
   .nav-logos img { height: 32px; width: auto; object-fit: contain; }
+  .nav-logo-babcock { height: 70px !important; }
+  .nav-logo-thchan { height: 60px !important; }
+  .nav-logo-bedc { height: 60px !important; }
   .nav-links { display: flex; gap: 2.5rem; align-items: center; }
   .nav-links a {
     font-size: 0.78rem; font-weight: 500;
@@ -87,6 +90,20 @@ const styles = `
   .mobile-menu-card .nav-cta {
     margin-top: 2rem; text-align: center; border-radius: 4px; padding: 1rem !important;
   }
+  .mobile-menu-logos {
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .mobile-menu-logos img { width: auto; object-fit: contain; }
+  .mobile-menu-logo-babcock { height: 36px; }
+  .mobile-menu-logo-thchan { height: 32px; }
+  .mobile-menu-logo-bedc { height: 32px; }
 
   .hero {
     min-height: 100vh;
@@ -244,6 +261,12 @@ const styles = `
   .program-event p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
 
   .judging-table { width: 100%; border-collapse: collapse; margin-top: 2.5rem; font-size: 0.83rem; }
+  .judging-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .judging-table { min-width: 720px; }
   .judging-table th { text-align: left; padding: 1rem 1.5rem; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 500; }
   .judging-table td { padding: 1.2rem 1.5rem; border-bottom: 1px solid rgba(42,42,46,0.5); vertical-align: top; line-height: 1.5; }
   .judging-table tr:hover td { background: rgba(165,28,48,0.03); }
@@ -294,6 +317,7 @@ const styles = `
   .footer-links { display: flex; gap: 2rem; }
   .footer-links a { font-size: 0.72rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
   .footer-links a:hover { color: var(--text); }
+  .footer-powered-logo { width: auto; object-fit: contain; }
 
   .badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(165,28,48,0.12); color: var(--crimson); padding: 0.3rem 0.8rem; border-radius: 2px; border: 1px solid rgba(165,28,48,0.2); }
   .badge.teal { background: rgba(74,158,138,0.1); color: var(--accent); border-color: rgba(74,158,138,0.2); }
@@ -388,7 +412,10 @@ const styles = `
     .timeline::before { display: none; }
     .footer { grid-template-columns: 1fr; gap: 2rem; }
     .nav-links { display: none; }
-    .nav-logos { display: none; }
+    .nav-logos { display: flex; gap: 0.9rem; }
+    .nav-logo-babcock { height: 42px !important; }
+    .nav-logo-thchan { height: 36px !important; }
+    .nav-logo-bedc { height: 36px !important; }
     .mobile-nav-toggle { display: block; }
     .closed-info-grid { grid-template-columns: 1fr; }
     .closed-info-section { padding: 4rem 2rem; }
@@ -470,6 +497,12 @@ const teamCards = [
   { icon: Lightbulb, title: "No Prototype Required", desc: "Concept-stage ideas are fully welcome. Judges assess the clarity and potential of your idea, not the completeness of a prototype." },
   { icon: BrainCircuit, title: "AI-Focused Solutions", desc: "All solutions should meaningfully leverage AI. Ethical considerations around bias, privacy, and equity must be addressed." },
 ];
+
+const footerLogoHeights = {
+  babcock: 98,
+  thChan: 48,
+  bedc: 48,
+};
 
 function ApplicationsClosed({ onBack }) {
   return (
@@ -567,9 +600,9 @@ export default function HSILHackathon() {
         <nav className="nav">
           <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
             <div className="nav-logos">
-              <img src="/images/logos/BabcockUni-logo.png" alt="Babcock" style={{ height: "70px" }} />
-              <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" style={{ height: "60px" }} />
-              <img src="/images/logos/BEDC-logo.png" alt="BEDC" style={{ height: "60px" }} />
+              <img src="/images/logos/BabcockUni-logo.png" alt="Babcock" className="nav-logo-babcock" />
+              <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" className="nav-logo-thchan" />
+              <img src="/images/logos/BEDC-logo.png" alt="BEDC" className="nav-logo-bedc" />
             </div>
           </div>
           <div className="nav-links">
@@ -597,6 +630,11 @@ export default function HSILHackathon() {
           <a onClick={() => scrollTo("judging")}>Judging</a>
           <a onClick={() => scrollTo("sponsors")}>Sponsors</a>
           <a className="nav-cta" onClick={() => { setIsMobileMenuOpen(false); setShowClosed(true); }}>Apply Now</a>
+          <div className="mobile-menu-logos">
+            <img src="/images/logos/BabcockUni-logo.png" alt="Babcock" className="mobile-menu-logo-babcock" />
+            <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" className="mobile-menu-logo-thchan" />
+            <img src="/images/logos/BEDC-logo.png" alt="BEDC" className="mobile-menu-logo-bedc" />
+          </div>
         </div>
 
         {/* HERO */}
@@ -759,28 +797,30 @@ export default function HSILHackathon() {
           <div className="section-label">Judging</div>
           <h2 className="section-title">How We Score<br /><em>Your Innovation</em></h2>
           <p className="section-body">A panel of 3–5 local judges with clinical, technical, and business expertise evaluates all pitches on Day 2. Total: 30 points.</p>
-          <table className="judging-table">
-            <thead>
-              <tr>
-                <th>Criterion</th>
-                <th>What Judges Look For</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {judgingCriteria.map((c, i) => (
-                <tr key={i}>
-                  <td>{c.name}</td>
-                  <td style={{ color: "var(--muted)", fontSize: "0.8rem" }}>{c.desc}</td>
-                  <td><strong>{c.points}</strong></td>
+          <div className="judging-table-wrap">
+            <table className="judging-table">
+              <thead>
+                <tr>
+                  <th>Criterion</th>
+                  <th>What Judges Look For</th>
+                  <th>Score</th>
                 </tr>
-              ))}
-              <tr>
-                <td colSpan={2} style={{ fontWeight: 600, fontSize: "0.88rem" }}>Total</td>
-                <td style={{ fontSize: "1.6rem" }}><strong>/30</strong></td>
-              </tr>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {judgingCriteria.map((c, i) => (
+                  <tr key={i}>
+                    <td>{c.name}</td>
+                    <td style={{ color: "var(--muted)", fontSize: "0.8rem" }}>{c.desc}</td>
+                    <td><strong>{c.points}</strong></td>
+                  </tr>
+                ))}
+                <tr>
+                  <td colSpan={2} style={{ fontWeight: 600, fontSize: "0.88rem" }}>Total</td>
+                  <td style={{ fontSize: "1.6rem" }}><strong>/30</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
 
         {/* PITCH */}
@@ -913,9 +953,9 @@ export default function HSILHackathon() {
           <div style={{ gridColumn: "1 / -1", textAlign: "center", marginTop: "2rem", paddingBottom: "2rem" }}>
             <p style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1.5rem" }}>Powered By</p>
             <div style={{ display: "flex", justifyContent: "center", gap: "4rem", alignItems: "center", flexWrap: "wrap", background: "white", padding: "2rem", borderRadius: "8px" }}>
-              <img src="/images/logos/BabcockUni-logo.png" alt="Babcock University" style={{ height: "48px", objectFit: "contain" }} />
-              <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" style={{ height: "48px", objectFit: "contain" }} />
-              <img src="/images/logos/BEDC-logo.png" alt="BEDC" style={{ height: "48px", objectFit: "contain" }} />
+              <img src="/images/logos/BabcockUni-logo.png" alt="Babcock University" className="footer-powered-logo" style={{ height: `${footerLogoHeights.babcock}px` }} />
+              <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" className="footer-powered-logo" style={{ height: `${footerLogoHeights.thChan}px` }} />
+              <img src="/images/logos/BEDC-logo.png" alt="BEDC" className="footer-powered-logo" style={{ height: `${footerLogoHeights.bedc}px` }} />
             </div>
           </div>
 
