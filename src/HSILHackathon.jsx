@@ -566,11 +566,10 @@ export default function HSILHackathon() {
         {/* NAV */}
         <nav className="nav">
           <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
-            <div className="nav-logo"><span>HSIL</span> Hackathon 2026</div>
             <div className="nav-logos">
-              <img src="/images/logos/BabcockUni-logo.png" alt="Babcock" style={{ height: "32px" }} />
-              <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" style={{ height: "32px" }} />
-              <img src="/images/logos/BEDC-logo.png" alt="BEDC" style={{ height: "32px" }} />
+              <img src="/images/logos/BabcockUni-logo.png" alt="Babcock" style={{ height: "70px" }} />
+              <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" style={{ height: "60px" }} />
+              <img src="/images/logos/BEDC-logo.png" alt="BEDC" style={{ height: "60px" }} />
             </div>
           </div>
           <div className="nav-links">
