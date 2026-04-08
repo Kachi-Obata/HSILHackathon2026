@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Globe, Dna, Users, Rocket, Mic, BrainCircuit, ClipboardList,
   Lightbulb, Hammer, Target, Scale, Trophy, GraduationCap, Building2,
   Shuffle, Zap, Microscope, Sparkles, X, ShieldX, ArrowLeft,
-  CalendarOff, Mail, ExternalLink, HeartPulse, Clock, BookOpen, Menu
+  CalendarOff, Mail, ExternalLink, HeartPulse, Clock, BookOpen, Menu, Phone
 } from "lucide-react";
 
 function LinkedInIcon({ size = 16 }) {
@@ -16,6 +16,20 @@ function LinkedInIcon({ size = 16 }) {
       aria-hidden="true"
     >
       <path d="M4.983 3.5C4.983 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.113 1 2.483 1 4.983 2.12 4.983 3.5zM.5 8h4V23h-4V8zm7 0h3.833v2.051h.054c.534-1.012 1.84-2.08 3.79-2.08 4.053 0 4.803 2.667 4.803 6.136V23h-4v-7.83c0-1.867-.033-4.268-2.6-4.268-2.603 0-3 2.034-3 4.133V23h-4V8z" />
+    </svg>
+  );
+}
+
+function WhatsAppIcon({ size = 16 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.48 0 .12 5.35.12 11.94c0 2.1.55 4.15 1.59 5.96L0 24l6.3-1.65a11.88 11.88 0 0 0 5.76 1.47h.01c6.58 0 11.94-5.35 11.94-11.94 0-3.19-1.24-6.18-3.49-8.4zm-8.46 18.3h-.01a9.84 9.84 0 0 1-5.01-1.37l-.36-.22-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.52-5.22c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.12 1.03 6.98 2.89a9.81 9.81 0 0 1 2.89 6.99c0 5.45-4.44 9.89-9.89 9.89zm5.42-7.41c-.3-.15-1.77-.87-2.04-.96-.27-.1-.47-.15-.67.15s-.77.96-.94 1.15c-.17.2-.35.22-.65.08-.3-.15-1.25-.46-2.38-1.47a8.92 8.92 0 0 1-1.66-2.06c-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.08-.8.37s-1.04 1.01-1.04 2.46 1.07 2.85 1.21 3.05c.15.2 2.1 3.2 5.09 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.08 1.77-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" />
     </svg>
   );
 }
@@ -48,7 +62,7 @@ const styles = `
   }
 
   .nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    position: sticky; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 4rem;
     height: 72px;
@@ -414,8 +428,183 @@ const styles = `
   }
   .closed-footer p { font-size: 0.72rem; color: var(--muted); }
 
+  .sponsor-contact-page {
+    min-height: 100vh;
+    background: var(--dark);
+  }
+  .sponsor-hero {
+    padding: 5rem 4rem 3rem;
+    background: radial-gradient(ellipse 65% 60% at 60% 35%, rgba(165,28,48,0.1) 0%, transparent 65%), var(--dark);
+  }
+  .sponsor-subcopy {
+    color: var(--muted);
+    max-width: 760px;
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+  .sponsor-contact-grid {
+    padding: 0 4rem 5rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 520px));
+    justify-content: center;
+    gap: 2rem;
+  }
+  .sponsor-contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .sponsor-contact-card:hover { border-color: rgba(165,28,48,0.45); transform: translateY(-2px); }
+  .sponsor-contact-photo {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    object-position: top center;
+    border-bottom: 1px solid var(--border);
+  }
+  .sponsor-contact-body { padding: 1.5rem; }
+  .sponsor-contact-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+  }
+  .sponsor-contact-role {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    font-weight: 600;
+    margin-bottom: 0.9rem;
+  }
+  .sponsor-contact-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .sponsor-contact-actions {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .contact-icon-link {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid rgba(165,28,48,0.35);
+    background: rgba(165,28,48,0.1);
+    color: var(--crimson);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .contact-icon-link.whatsapp {
+    border-color: rgba(37, 211, 102, 0.45);
+    background: rgba(37, 211, 102, 0.12);
+    color: #1b9b4d;
+  }
+  .contact-icon-link.whatsapp:hover {
+    background: #25D366;
+    color: #fff;
+  }
+  .contact-icon-link:hover {
+    background: var(--crimson);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+  .email-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    border: 1px solid rgba(165,28,48,0.35);
+    background: rgba(165,28,48,0.08);
+    padding: 0.65rem 0.9rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+  }
+  .email-chip:hover {
+    background: var(--crimson);
+    color: #fff;
+  }
+  .independent-email-cta {
+    margin-top: 1.25rem;
+  }
+  .contact-fallback-note {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-left: 3px solid var(--crimson);
+    padding: 0.45rem 0.75rem;
+    background: rgba(165,28,48,0.05);
+    border-radius: 4px;
+  }
+  .copy-toast {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 2000;
+    background: #1d232b;
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    border-left: 3px solid var(--crimson);
+    max-width: min(90vw, 360px);
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    animation: toastIn 180ms ease-out forwards, toastOut 280ms ease-in 2.1s forwards;
+  }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes toastOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(6px); }
+  }
+  .sponsor-info-panel {
+    margin: 0 4rem 5rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    background: linear-gradient(120deg, rgba(165,28,48,0.06) 0%, rgba(255,255,255,0) 60%), var(--card);
+  }
+  .sponsor-info-list {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem 1.5rem;
+  }
+  .sponsor-info-item {
+    font-size: 0.84rem;
+    color: var(--muted);
+    display: flex;
+    gap: 0.55rem;
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+  .sponsor-info-item::before {
+    content: '•';
+    color: var(--crimson);
+    font-weight: 700;
+  }
+
   @media (max-width: 1024px) {
-    .nav { padding: 0 2rem; position: sticky; top: 0; background: var(--nav-gray); }
+    .nav { padding: 0 2rem; position: fixed; top: 0; left: 0; right: 0; background: var(--nav-gray); }
+    .hsil-root, .closed-page, .sponsor-contact-page { padding-top: 72px; }
     .section { padding: 5rem 2rem; }
     .hero { padding: 0 2rem 5rem; }
     .about-grid, .program-cols { grid-template-columns: 1fr; gap: 3rem; }
@@ -434,6 +623,10 @@ const styles = `
     .mobile-nav-toggle { display: block; }
     .closed-info-grid { grid-template-columns: 1fr; }
     .closed-info-section { padding: 4rem 2rem; }
+    .sponsor-hero { padding: 4.5rem 2rem 2.5rem; }
+    .sponsor-contact-grid { padding: 0 2rem 4rem; grid-template-columns: 1fr; }
+    .sponsor-info-panel { margin: 0 2rem 4rem; }
+    .sponsor-info-list { grid-template-columns: 1fr; }
   }
   @media (max-width: 640px) {
     .challenges-grid, .team-cards, .resources-grid { grid-template-columns: 1fr; }
@@ -519,16 +712,9 @@ const footerLogoHeights = {
   bedc: 48,
 };
 
-function ApplicationsClosed({ onBack }) {
+function ApplicationsClosed({ onBack, onSponsorContact }) {
   return (
     <div className="closed-page">
-      <nav className="nav">
-        <div className="nav-logo"><span>HSIL</span> Hackathon 2026</div>
-        <div className="nav-links">
-          <a onClick={onBack}>Back to Home</a>
-        </div>
-      </nav>
-
       <div className="closed-hero">
         <div className="closed-hero-bg" />
         <div className="closed-icon-ring">
@@ -542,6 +728,9 @@ function ApplicationsClosed({ onBack }) {
         </p>
         <button className="closed-back" onClick={onBack}>
           <ArrowLeft size={16} /> Return to Homepage
+        </button>
+        <button className="closed-back" onClick={onSponsorContact} style={{ marginTop: "0.9rem" }}>
+          <Building2 size={16} /> Sponsorship & Partnership Contact
         </button>
       </div>
 
@@ -587,24 +776,223 @@ function ApplicationsClosed({ onBack }) {
   );
 }
 
+function SponsorContactPage({ onBack }) {
+  const emailHref = "mailto:dir.entrepreneurship@babcock.edu.ng?subject=HSIL%20Hackathon%202026%20Sponsorship%20Inquiry&body=Hello%20HSIL%20Partnerships%20Team%2C%0A%0AI%20am%20interested%20in%20sponsoring%20the%20HSIL%20Hackathon%202026.%20Please%20share%20the%20next%20steps.%0A%0AOrganization%3A%0AContact%20Person%3A%0APhone%3A%0AInterest%20Area%3A%0A";
+  const [toastMessage, setToastMessage] = useState("");
+  const toastTimerRef = useRef(null);
+  const isMobileDevice = /iPad|iPhone|iPod|Android/i.test(navigator.userAgent);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) {
+        window.clearTimeout(toastTimerRef.current);
+      }
+    };
+  }, []);
+
+  const fallbackToCopy = async (value, message) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setToastMessage(message);
+    } catch {
+      setToastMessage(`Copy this manually: ${value}`);
+    }
+
+    if (toastTimerRef.current) {
+      window.clearTimeout(toastTimerRef.current);
+    }
+    toastTimerRef.current = window.setTimeout(() => setToastMessage(""), 2500);
+  };
+
+  const attemptOpenThenFallback = (value, message) => {
+    if (isMobileDevice) return;
+
+    let switchedContext = false;
+    const onBlur = () => {
+      switchedContext = true;
+    };
+
+    window.addEventListener("blur", onBlur, { once: true });
+
+    window.setTimeout(() => {
+      window.removeEventListener("blur", onBlur);
+      if (!switchedContext && document.visibilityState === "visible") {
+        fallbackToCopy(value, message);
+      }
+    }, 900);
+  };
+
+  return (
+    <div className="sponsor-contact-page">
+      <section className="sponsor-hero">
+        <div className="section-label">Sponsorship & Partnerships</div>
+        <h1 className="section-title">Let’s Build the<br /><em>Future of Health Innovation</em></h1>
+        <p className="sponsor-subcopy">
+          Thank you for your interest in supporting the HSIL Hackathon. We partner with organizations that want meaningful visibility,
+          direct access to top health innovators, and strategic alignment with global health impact. Share your sponsorship goals and our team
+          will guide you to the right partnership pathway.
+        </p>
+      </section>
+
+      <section className="sponsor-contact-grid">
+        <article className="sponsor-contact-card">
+          <img src="/images/Kachi-Obata.jpeg" alt="Obata Onyelukachukwu M. O." className="sponsor-contact-photo" />
+          <div className="sponsor-contact-body">
+            <h3>Obata Onyelukachukwu M. O.</h3>
+            <p className="sponsor-contact-role">Head of Sponsorships and Partnerships</p>
+            <p className="sponsor-contact-desc">
+              Leads sponsorship strategy, institution-level partnerships, and high-impact partner alignment for the Nigeria hub.
+              Reach out for tier selection, strategic collaboration models, and long-term ecosystem partnerships.
+            </p>
+            <div className="sponsor-contact-actions">
+              <a
+                href={emailHref}
+                className="email-chip"
+                aria-label="Email the partnerships team"
+                onClick={() => attemptOpenThenFallback("dir.entrepreneurship@babcock.edu.ng", "Email address copied. Paste it in your mail app.")}
+              >
+                <Mail size={14} /> Email Us
+              </a>
+              <a
+                href="tel:+2348092226795"
+                className="contact-icon-link"
+                aria-label="Call Obata Onyelukachukwu"
+                title="Call +2348092226795"
+                onClick={() => attemptOpenThenFallback("+2348092226795", "Phone number copied. You can place a call from your device.")}
+              >
+                <Phone size={16} />
+              </a>
+              <a
+                href="https://wa.me/2348092226795"
+                className="contact-icon-link whatsapp"
+                aria-label="Message Obata Onyelukachukwu on WhatsApp"
+                title="WhatsApp +2348092226795"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => attemptOpenThenFallback("+2348092226795", "WhatsApp number copied. Open WhatsApp and start a chat.")}
+              >
+                <WhatsAppIcon size={16} />
+              </a>
+              <a href="https://www.linkedin.com/in/onyelukachukwu-obata" target="_blank" rel="noreferrer" className="hero-btn">
+                Connect on LinkedIn <ExternalLink size={14} />
+              </a>
+            </div>
+            <p className="contact-fallback-note">On desktop? No worries, if your mail app or WhatsApp does not open, we’ll copy the contact details for you automatically.</p>
+          </div>
+        </article>
+
+        <article className="sponsor-contact-card">
+          <img src="/images/TemsPartnerships.jpeg" alt="Adebayo Temiloluwa Olamide" className="sponsor-contact-photo" />
+          <div className="sponsor-contact-body">
+            <h3>Adebayo Temiloluwa Olamide</h3>
+            <p className="sponsor-contact-role">Volunteer, Partnerships Team</p>
+            <p className="sponsor-contact-desc">
+              Supports sponsor onboarding, partnership coordination, and communication follow-through for prospective collaborators.
+              Reach out for sponsorship process support, timelines, and first-response guidance.
+            </p>
+            <div className="sponsor-contact-actions">
+              <a
+                href={emailHref}
+                className="email-chip"
+                aria-label="Email the partnerships team"
+                onClick={() => attemptOpenThenFallback("dir.entrepreneurship@babcock.edu.ng", "Email address copied. Paste it in your mail app.")}
+              >
+                <Mail size={14} /> Email Us
+              </a>
+              <a
+                href="tel:+2349130908597"
+                className="contact-icon-link"
+                aria-label="Call Adebayo Temiloluwa Olamide"
+                title="Call +2349130908597"
+                onClick={() => attemptOpenThenFallback("+2349130908597", "Phone number copied. You can place a call from your device.")}
+              >
+                <Phone size={16} />
+              </a>
+              <a
+                href="https://wa.me/2349130908597"
+                className="contact-icon-link whatsapp"
+                aria-label="Message Adebayo Temiloluwa Olamide on WhatsApp"
+                title="WhatsApp +2349130908597"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => attemptOpenThenFallback("+2349130908597", "WhatsApp number copied. Open WhatsApp and start a chat.")}
+              >
+                <WhatsAppIcon size={16} />
+              </a>
+              <a href="https://www.linkedin.com/in/temiloluwa-adebayo-405786274/" target="_blank" rel="noreferrer" className="hero-btn">
+                Start the Conversation <ExternalLink size={14} />
+              </a>
+            </div>
+            <p className="contact-fallback-note">On desktop? No worries, if your mail app or WhatsApp does not open, we’ll copy the contact details for you automatically.</p>
+          </div>
+        </article>
+      </section>
+
+      <section className="sponsor-info-panel">
+        <div className="section-label">What to Include</div>
+        <h2 className="section-title" style={{ marginBottom: "0.4rem" }}>Help Us Match You<br /><em>to the Right Tier</em></h2>
+        <p className="sponsor-subcopy" style={{ maxWidth: "100%" }}>
+          To speed up review, include a short overview of your organization and what value you want to create through the hackathon.
+        </p>
+        <div className="sponsor-info-list">
+          <p className="sponsor-info-item">Your organization name and sector focus.</p>
+          <p className="sponsor-info-item">Preferred sponsorship tier or investment range.</p>
+          <p className="sponsor-info-item">What outcomes matter most (branding, recruitment, innovation access, etc.).</p>
+          <p className="sponsor-info-item">Timeline constraints and decision milestones.</p>
+          <p className="sponsor-info-item">Any specific challenge track or visibility request.</p>
+          <p className="sponsor-info-item">Primary contact person and availability window.</p>
+        </div>
+        <div style={{ marginTop: "1.6rem" }}>
+          <a
+            href={emailHref}
+            className="hero-btn independent-email-cta"
+            style={{ marginRight: "0.75rem" }}
+            onClick={() => attemptOpenThenFallback("dir.entrepreneurship@babcock.edu.ng", "Email address copied. Paste it in your mail app.")}
+          >
+            <Mail size={16} /> Send an Email
+          </a>
+          <button className="closed-back" onClick={onBack}>
+            <ArrowLeft size={16} /> Back to Homepage
+          </button>
+        </div>
+      </section>
+      {toastMessage && <div className="copy-toast">{toastMessage}</div>}
+    </div>
+  );
+}
+
 export default function HSILHackathon() {
   const [openChallenge, setOpenChallenge] = useState(null);
-  const [showClosed, setShowClosed] = useState(false);
+  const [activePage, setActivePage] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const scrollTo = (id) => {
+  const scrollToSection = (id) => {
+    setIsMobileMenuOpen(false);
+    if (activePage !== "home") {
+      setActivePage("home");
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }, 30);
+      return;
+    }
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const openClosedPage = () => {
+    setActivePage("closed");
     setIsMobileMenuOpen(false);
   };
 
-  if (showClosed) {
-    return (
-      <>
-        <style>{styles}</style>
-        <ApplicationsClosed onBack={() => setShowClosed(false)} />
-      </>
-    );
-  }
+  const openSponsorContactPage = () => {
+    setActivePage("sponsor-contact");
+    setIsMobileMenuOpen(false);
+  };
+
+  const goHome = () => {
+    setActivePage("home");
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -621,12 +1009,13 @@ export default function HSILHackathon() {
             </div>
           </div>
           <div className="nav-links">
-            <a onClick={() => scrollTo("about")}>About</a>
-            <a onClick={() => scrollTo("program")}>Program</a>
-            <a onClick={() => scrollTo("challenges")}>Challenges</a>
-            <a onClick={() => scrollTo("judging")}>Judging</a>
-            <a onClick={() => scrollTo("sponsors")}>Sponsors</a>
-            <a className="nav-cta" onClick={() => setShowClosed(true)}>Apply Now</a>
+            <a onClick={() => scrollToSection("about")}>About</a>
+            <a onClick={() => scrollToSection("program")}>Program</a>
+            <a onClick={() => scrollToSection("challenges")}>Challenges</a>
+            <a onClick={() => scrollToSection("judging")}>Judging</a>
+            <a onClick={() => scrollToSection("sponsors")}>Sponsors</a>
+            <a onClick={openSponsorContactPage}>Sponsor Contact</a>
+            <a className="nav-cta" onClick={openClosedPage}>Apply Now</a>
           </div>
           <div className="mobile-nav-toggle" onClick={() => setIsMobileMenuOpen(true)}>
             <Menu size={28} />
@@ -639,18 +1028,22 @@ export default function HSILHackathon() {
           <div className="close-btn" onClick={() => setIsMobileMenuOpen(false)}>
             <X size={32} />
           </div>
-          <a onClick={() => scrollTo("about")}>About</a>
-          <a onClick={() => scrollTo("program")}>Program</a>
-          <a onClick={() => scrollTo("challenges")}>Challenges</a>
-          <a onClick={() => scrollTo("judging")}>Judging</a>
-          <a onClick={() => scrollTo("sponsors")}>Sponsors</a>
-          <a className="nav-cta" onClick={() => { setIsMobileMenuOpen(false); setShowClosed(true); }}>Apply Now</a>
+          <a onClick={() => scrollToSection("about")}>About</a>
+          <a onClick={() => scrollToSection("program")}>Program</a>
+          <a onClick={() => scrollToSection("challenges")}>Challenges</a>
+          <a onClick={() => scrollToSection("judging")}>Judging</a>
+          <a onClick={() => scrollToSection("sponsors")}>Sponsors</a>
+          <a onClick={openSponsorContactPage}>Sponsor Contact</a>
+          <a className="nav-cta" onClick={openClosedPage}>Apply Now</a>
           <div className="mobile-menu-logos">
             <img src="/images/logos/BabcockUni-logo.png" alt="Babcock" className="mobile-menu-logo-babcock" />
             <img src="/images/logos/TH-Chan-logo.png" alt="Harvard TH Chan" className="mobile-menu-logo-thchan" />
             <img src="/images/logos/BEDC-logo.png" alt="BEDC" className="mobile-menu-logo-bedc" />
           </div>
         </div>
+
+        {activePage === "home" && (
+          <>
 
         {/* HERO */}
         <section className="hero">
@@ -681,7 +1074,7 @@ export default function HSILHackathon() {
               <span className="hero-stat-label">Multi-Hub Event</span>
             </div>
             <div className="hero-divider" />
-            <button className="hero-btn" onClick={() => setShowClosed(true)}>Apply to Participate</button>
+            <button className="hero-btn" onClick={openClosedPage}>Apply to Participate</button>
           </div>
           <div className="hero-scroll">
             <div className="hero-scroll-line" />
@@ -880,7 +1273,7 @@ export default function HSILHackathon() {
                 <ul className="tier-perks">
                   {t.perks.map((p, j) => <li key={j}>{p}</li>)}
                 </ul>
-                <button className="tier-btn">Get in Touch</button>
+                <button className="tier-btn" onClick={openSponsorContactPage}>Get in Touch</button>
               </div>
             ))}
           </div>
@@ -929,8 +1322,8 @@ export default function HSILHackathon() {
             Contact your local Hub organizer to confirm your participation. Accepted participants receive Slack access and pre-event Q&A session details at least two weeks before the event.
           </p>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-            <button className="hero-btn" onClick={() => setShowClosed(true)}>Apply as Participant</button>
-            <button className="hero-btn" style={{ background: "transparent", border: "1px solid var(--crimson)", color: "var(--crimson)" }} onClick={() => scrollTo("sponsors")}>
+            <button className="hero-btn" onClick={openClosedPage}>Apply as Participant</button>
+            <button className="hero-btn" style={{ background: "transparent", border: "1px solid var(--crimson)", color: "var(--crimson)" }} onClick={openSponsorContactPage}>
               Become a Sponsor
             </button>
           </div>
@@ -948,7 +1341,7 @@ export default function HSILHackathon() {
             <div>
               <p style={{ fontSize: "0.7rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1rem" }}>Quick Links</p>
               {["about", "program", "challenges", "judging", "sponsors", "resources"].map(l => (
-                <a key={l} onClick={() => scrollTo(l)} style={{ display: "block", fontSize: "0.82rem", color: "var(--muted)", textDecoration: "none", padding: "0.3rem 0", cursor: "pointer", textTransform: "capitalize" }}
+                <a key={l} onClick={() => scrollToSection(l)} style={{ display: "block", fontSize: "0.82rem", color: "var(--muted)", textDecoration: "none", padding: "0.3rem 0", cursor: "pointer", textTransform: "capitalize" }}
                   onMouseEnter={e => e.target.style.color = "var(--text)"}
                   onMouseLeave={e => e.target.style.color = "var(--muted)"}
                 >{l}</a>
@@ -978,7 +1371,7 @@ export default function HSILHackathon() {
             <p>&copy; 2026 Health Systems Innovation Lab, Harvard University. All rights reserved.</p>
             <div className="footer-links">
               <a href="#">Privacy Policy</a>
-              <a href="#">Contact</a>
+              <a onClick={openSponsorContactPage}>Contact</a>
               <a href="https://www.hsph.harvard.edu/health-systems-innovationlab/" target="_blank" rel="noreferrer">HSIL Website</a>
               <a
                 href="https://www.linkedin.com/company/harvard-×-babcock-global-health-hackathon-nigeria-hub"
@@ -993,6 +1386,12 @@ export default function HSILHackathon() {
             </div>
           </div>
         </footer>
+
+          </>
+        )}
+
+        {activePage === "closed" && <ApplicationsClosed onBack={goHome} onSponsorContact={openSponsorContactPage} />}
+        {activePage === "sponsor-contact" && <SponsorContactPage onBack={goHome} />}
 
       </div>
     </>
