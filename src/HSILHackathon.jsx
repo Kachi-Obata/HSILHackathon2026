@@ -6,6 +6,20 @@ import {
   CalendarOff, Mail, ExternalLink, HeartPulse, Clock, BookOpen, Menu
 } from "lucide-react";
 
+function LinkedInIcon({ size = 16 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M4.983 3.5C4.983 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.113 1 2.483 1 4.983 2.12 4.983 3.5zM.5 8h4V23h-4V8zm7 0h3.833v2.051h.054c.534-1.012 1.84-2.08 3.79-2.08 4.053 0 4.803 2.667 4.803 6.136V23h-4v-7.83c0-1.867-.033-4.268-2.6-4.268-2.603 0-3 2.034-3 4.133V23h-4V8z" />
+    </svg>
+  );
+}
+
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap');
 
@@ -14,12 +28,13 @@ const styles = `
   :root {
     --crimson: #A51C30;
     --crimson-light: #c9273e;
-    --dark: #0D0D0F;
-    --card: #141416;
-    --border: #2a2a2e;
-    --text: #e8e4df;
-    --muted: #7a7570;
-    --accent: #4a9e8a;
+    --dark: #f7f7f4;
+    --card: #eff1f4;
+    --border: #d6dbe1;
+    --text: #1d232b;
+    --muted: #5f6670;
+    --accent: #2f7a6b;
+    --nav-gray: #e3e6ea;
   }
 
   body { background: var(--dark); color: var(--text); }
@@ -37,7 +52,7 @@ const styles = `
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 4rem;
     height: 72px;
-    background: rgba(13,13,15,0.88);
+  background: rgba(227,230,234,0.92);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
   }
@@ -76,15 +91,15 @@ const styles = `
   .mobile-menu-overlay.open { opacity: 1; pointer-events: auto; }
   .mobile-menu-card {
     position: fixed; top: 0; right: 0; bottom: 0; width: 300px; max-width: 80vw;
-    background: #ffffff; color: var(--dark); z-index: 1001;
+    background: #ffffff; color: var(--text); z-index: 1001;
     transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex; flex-direction: column; padding: 2rem; box-shadow: -4px 0 24px rgba(0,0,0,0.2);
   }
   .mobile-menu-card.open { transform: translateX(0); }
-  .mobile-menu-card .close-btn { align-self: flex-end; margin-bottom: 2rem; cursor: pointer; color: var(--dark); }
+  .mobile-menu-card .close-btn { align-self: flex-end; margin-bottom: 2rem; cursor: pointer; color: var(--text); }
   .mobile-menu-card a {
     font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
-    color: var(--dark); text-decoration: none; padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.08);
+    color: var(--text); text-decoration: none; padding: 1rem 0; border-bottom: 1px solid rgba(0,0,0,0.08);
     cursor: pointer;
   }
   .mobile-menu-card .nav-cta {
@@ -113,14 +128,14 @@ const styles = `
   }
   .hero-bg {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(165,28,48,0.18) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 50% at 20% 80%, rgba(74,158,138,0.08) 0%, transparent 50%),
+    background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(165,28,48,0.11) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 20% 80%, rgba(47,122,107,0.08) 0%, transparent 50%),
                 var(--dark);
   }
   .hero-grid {
     position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(20,26,33,0.06) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(20,26,33,0.06) 1px, transparent 1px);
     background-size: 80px 80px;
     mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
   }
@@ -234,7 +249,7 @@ const styles = `
     gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 3rem;
   }
   .challenge-card {
-    background: var(--dark); padding: 2rem; cursor: pointer;
+    background: var(--card); padding: 2rem; cursor: pointer;
     transition: background 0.2s; position: relative; overflow: hidden;
   }
   .challenge-card:hover { background: rgba(165,28,48,0.05); }
@@ -338,7 +353,7 @@ const styles = `
   }
   .closed-hero-bg {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(165,28,48,0.12) 0%, transparent 60%),
+    background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(165,28,48,0.1) 0%, transparent 60%),
                 var(--dark);
   }
   .closed-icon-ring {
@@ -400,7 +415,7 @@ const styles = `
   .closed-footer p { font-size: 0.72rem; color: var(--muted); }
 
   @media (max-width: 1024px) {
-    .nav { padding: 0 2rem; position: sticky; top: 0; background: var(--dark); }
+    .nav { padding: 0 2rem; position: sticky; top: 0; background: var(--nav-gray); }
     .section { padding: 5rem 2rem; }
     .hero { padding: 0 2rem 5rem; }
     .about-grid, .program-cols { grid-template-columns: 1fr; gap: 3rem; }
@@ -965,6 +980,16 @@ export default function HSILHackathon() {
               <a href="#">Privacy Policy</a>
               <a href="#">Contact</a>
               <a href="https://www.hsph.harvard.edu/health-systems-innovationlab/" target="_blank" rel="noreferrer">HSIL Website</a>
+              <a
+                href="https://www.linkedin.com/company/harvard-×-babcock-global-health-hackathon-nigeria-hub"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Harvard x Babcock Global Health Hackathon Nigeria Hub on LinkedIn"
+                title="LinkedIn"
+                style={{ display: "inline-flex", alignItems: "center" }}
+              >
+                <LinkedInIcon size={16} />
+              </a>
             </div>
           </div>
         </footer>
