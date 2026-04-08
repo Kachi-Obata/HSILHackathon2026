@@ -3,7 +3,8 @@ import {
   Globe, Dna, Users, Rocket, Mic, BrainCircuit, ClipboardList,
   Lightbulb, Hammer, Target, Scale, Trophy, GraduationCap, Building2,
   Shuffle, Zap, Microscope, Sparkles, X, ShieldX, ArrowLeft,
-  CalendarOff, Mail, ExternalLink, HeartPulse, Clock, BookOpen, Menu, Phone
+  CalendarOff, Mail, ExternalLink, HeartPulse, Clock, BookOpen, Menu, Phone,
+  Calendar, Coffee, Film, ChevronRight
 } from "lucide-react";
 
 function LinkedInIcon({ size = 16 }) {
@@ -601,10 +602,143 @@ const styles = `
     color: var(--crimson);
     font-weight: 700;
   }
+  .donation-panel {
+    margin-top: 1.75rem;
+    border: 1px solid rgba(165,28,48,0.25);
+    border-radius: 10px;
+    padding: 1.25rem;
+    background: rgba(165,28,48,0.06);
+  }
+  .donation-panel h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+  }
+  .donation-panel p {
+    color: var(--muted);
+    font-size: 0.84rem;
+    line-height: 1.65;
+  }
+  .donation-details {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .donation-details p {
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+  .donation-details strong {
+    color: var(--crimson);
+    font-weight: 600;
+    margin-right: 0.35rem;
+  }
+  .copy-account-btn {
+    margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid rgba(165,28,48,0.35);
+    background: #fff;
+    color: var(--crimson);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.6rem 0.9rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .copy-account-btn:hover {
+    background: var(--crimson);
+    color: #fff;
+  }
+
+  /* Schedule Page */
+  .schedule-page { min-height: 100vh; background: var(--dark); }
+  .schedule-hero {
+    text-align: center; padding: 8rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .schedule-hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 30%, rgba(165,28,48,0.1) 0%, transparent 60%),
+                var(--dark);
+  }
+  .schedule-hero > * { position: relative; z-index: 1; }
+  .schedule-days {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;
+    padding: 0 4rem 6rem; max-width: 1200px; margin: 0 auto;
+  }
+  .schedule-day {
+    border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+  }
+  .schedule-day-header {
+    padding: 1.5rem 2rem;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .schedule-day-header h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 600;
+  }
+  .schedule-day-header span {
+    font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--crimson); font-weight: 500;
+  }
+  .schedule-day-header svg { color: var(--crimson); }
+  .schedule-events { padding: 0.5rem 0; }
+  .schedule-event {
+    display: grid; grid-template-columns: 120px 1fr; gap: 1.5rem;
+    padding: 1rem 2rem; border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .schedule-event:last-child { border-bottom: none; }
+  .schedule-event:hover { background: rgba(165,28,48,0.03); }
+  .schedule-event-time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem; font-weight: 600; color: var(--crimson);
+    padding-top: 0.15rem; white-space: nowrap;
+  }
+  .schedule-event-content h4 {
+    font-size: 0.88rem; font-weight: 500; margin-bottom: 0.2rem;
+  }
+  .schedule-event-content p {
+    font-size: 0.78rem; color: var(--muted); line-height: 1.5;
+  }
+  .schedule-event-tag {
+    display: inline-block; margin-top: 0.4rem;
+    font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+    font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 2px;
+  }
+  .schedule-event-tag.ceremony { background: rgba(165,28,48,0.1); color: var(--crimson); }
+  .schedule-event-tag.keynote { background: rgba(47,122,107,0.1); color: var(--accent); }
+  .schedule-event-tag.hack { background: rgba(59,130,246,0.1); color: #3b82f6; }
+  .schedule-event-tag.social { background: rgba(168,85,247,0.1); color: #a855f7; }
+  .schedule-event-tag.break { background: rgba(245,158,11,0.1); color: #f59e0b; }
+  .schedule-event-tag.logistics { background: rgba(107,114,128,0.1); color: #6b7280; }
+  .schedule-event-tag.pitch { background: rgba(165,28,48,0.1); color: var(--crimson); }
+  .schedule-note {
+    max-width: 640px; margin: 0 auto; padding: 0 4rem 4rem;
+    text-align: center;
+  }
+  .schedule-note p { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+  .schedule-nav-back {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    margin-top: 1.5rem; font-size: 0.78rem; color: var(--muted);
+    cursor: pointer; transition: color 0.2s; background: none;
+    border: 1px solid var(--border); padding: 0.6rem 1.5rem;
+    font-family: 'Outfit', sans-serif; border-radius: 2px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .schedule-nav-back:hover { color: var(--crimson); border-color: var(--crimson); }
 
   @media (max-width: 1024px) {
     .nav { padding: 0 2rem; position: fixed; top: 0; left: 0; right: 0; background: var(--nav-gray); }
-    .hsil-root, .closed-page, .sponsor-contact-page { padding-top: 72px; }
+    .hsil-root, .closed-page, .sponsor-contact-page, .schedule-page { padding-top: 72px; }
     .section { padding: 5rem 2rem; }
     .hero { padding: 0 2rem 5rem; }
     .about-grid, .program-cols { grid-template-columns: 1fr; gap: 3rem; }
@@ -627,11 +761,33 @@ const styles = `
     .sponsor-contact-grid { padding: 0 2rem 4rem; grid-template-columns: 1fr; }
     .sponsor-info-panel { margin: 0 2rem 4rem; }
     .sponsor-info-list { grid-template-columns: 1fr; }
+    .schedule-days { grid-template-columns: 1fr; padding: 0 2rem 4rem; }
+    .schedule-hero { padding: 6rem 2rem 3rem; }
+    .schedule-note { padding: 0 2rem 4rem; }
   }
   @media (max-width: 640px) {
+    .schedule-event { grid-template-columns: 90px 1fr; gap: 1rem; padding: 0.8rem 1.2rem; }
+    .schedule-event-time { font-size: 0.82rem; }
     .challenges-grid, .team-cards, .resources-grid { grid-template-columns: 1fr; }
     .pitch-step { grid-template-columns: 80px 1fr; }
     .pitch-step-bar { display: none; }
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.9rem;
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+    }
+    .footer-bottom p {
+      line-height: 1.65;
+      max-width: 100%;
+      margin-bottom: 0.2rem;
+    }
+    .footer-links {
+      flex-wrap: wrap;
+      gap: 1rem 1.25rem;
+      width: 100%;
+    }
   }
 `;
 
@@ -650,7 +806,7 @@ const challenges = [
 ];
 
 const timelineItems = [
-  { date: "Apr 10\u201311", name: "Hackathon", desc: "Hub Judging \u00b7 ~50 teams", icon: Zap, active: true },
+  { date: "Apr 9\u201310", name: "Hackathon", desc: "Hub Judging \u00b7 ~50 teams", icon: Zap, active: true },
   { date: "Apr 20 \u2013 May 1", name: "Bootcamp I", desc: "HSIL Judging \u00b7 20 teams", icon: Target, active: false },
   { date: "May 4\u201315", name: "Bootcamp II", desc: "Global Judging \u00b7 10 teams", icon: Rocket, active: false },
   { date: "May 18 \u2013 Jun 12", name: "Venture Immersion", desc: "4-week intensive \u00b7 10 teams", icon: Microscope, active: false },
@@ -667,11 +823,11 @@ const judgingCriteria = [
 ];
 
 const pitchSteps = [
-  { time: "10 sec", name: "Introduction", desc: "Introduce your team memorably \u2014 people recall beginnings and endings.", pct: 5.5 },
-  { time: "20 sec", name: "Problem Statement", desc: "Whose lives improve? What tangible impact will your solution have?", pct: 11 },
-  { time: "1 min", name: "Product", desc: "Explain the technical aspects with enough detail to show expertise.", pct: 33 },
-  { time: "1 min", name: "Demo", desc: "Live demo or visualization of design, functionality, and key features.", pct: 33 },
-  { time: "30 sec", name: "Wrap-up", desc: "Summarize key points and close with a strong, lasting statement.", pct: 17.5 },
+  { time: "15 sec", name: "Introduction", desc: "Introduce your team memorably \u2014 people recall beginnings and endings.", pct: 10 },
+  { time: "20 sec", name: "Problem Statement", desc: "Whose lives improve? What tangible impact will your solution have?", pct: 13 },
+  { time: "1 min", name: "Product & Solution", desc: "Explain the technical aspects with enough detail to show expertise.", pct: 40 },
+  { time: "30 sec", name: "Demo", desc: "Live demo or visualization of design, functionality, and key features.", pct: 20 },
+  { time: "15 sec", name: "Wrap-up", desc: "Summarize key points and close with a strong, lasting statement.", pct: 10 },
 ];
 
 const aboutFeatures = [
@@ -682,19 +838,19 @@ const aboutFeatures = [
 ];
 
 const day1Events = [
-  { icon: Mic, title: "Global Welcome Session", desc: "Online kick-off connecting all hubs worldwide." },
-  { icon: BrainCircuit, title: "Opening Keynote Panel", desc: "\u201CAI-Driven Digital Solutions for Building High-Value Health Systems\u201D \u2014 moderated by Prof. Rifat Atun, Harvard University." },
-  { icon: ClipboardList, title: "Hack 101 Briefing", desc: "Instructions, mentor introductions, and hackathon reminders." },
-  { icon: Users, title: "Team Formation & Ideation", desc: "Form teams of 3\u20135, select a challenge, and begin developing your solution concept." },
-  { icon: Lightbulb, title: "Hack: Building Begins", desc: "Intensive development session with on-site mentor access." },
+  { icon: ClipboardList, title: "Opening Ceremony", desc: "Arrival, registration, opening remarks by Dr. Ajibade, overview of objectives, expectations, and judging criteria." },
+  { icon: Users, title: "Team Formation & Brainstorming", desc: "Team finalization, participant allocation, and initial idea generation." },
+  { icon: BrainCircuit, title: "Panel: From Problem to Solution", desc: "Problem definition, idea structuring, innovation strategy, startup insights, and interactive Q&A." },
+  { icon: Lightbulb, title: "Mentorship & Solution Development", desc: "Rotational mentorship (~20 mins/team) focused on solution development, business model, product viability, and pitch preparation." },
+  { icon: Sparkles, title: "Evening Social", desc: "Movie night with networking and relaxation." },
 ];
 
 const day2Events = [
-  { icon: Sparkles, title: "Keynote: Women in HealthTech", desc: "\u201CEmpowering Women in HealthTech\u201D \u2014 leading female innovators share insights on diversity and inclusion in health technology." },
-  { icon: Hammer, title: "Continued Hacking", desc: "Final development sprint and mentor consultation sessions, sign-ups via Slack." },
-  { icon: Target, title: "Pitch Preparation", desc: "Refine your 3-minute presentation with mentor feedback." },
-  { icon: Scale, title: "Judging & Pitches", desc: "3-minute pitches to a panel of 3\u20135 local judges with clinical, technical, and business expertise." },
-  { icon: Trophy, title: "Awards Ceremony", desc: "Winners announced and advanced to the 8-week venture incubation program." },
+  { icon: Hammer, title: "Refinement & Practice", desc: "Final solution adjustments, sustainability alignment, integrated pitch rehearsals with mentor feedback." },
+  { icon: Globe, title: "Good Harvard Connect", desc: "Engagement and exposure session with strategic insights and networking from Harvard." },
+  { icon: Target, title: "Final Pitches", desc: "2.5-minute presentations followed by 2.5-minute Q&A with the judging panel." },
+  { icon: Scale, title: "Judges' Deliberation", desc: "Panel reviews all pitches and scores teams across six criteria." },
+  { icon: Trophy, title: "Awards & Closing", desc: "Winners announced, next steps shared, closing remarks, and group photo." },
 ];
 
 const teamCards = [
@@ -712,6 +868,109 @@ const footerLogoHeights = {
   bedc: 48,
 };
 
+const scheduleDay1 = [
+  { time: "09:00 \u2013 09:30", title: "Arrival & Registration", desc: "Badge pick-up and networking", tag: "logistics" },
+  { time: "09:30 \u2013 09:45", title: "Opening Ceremony", desc: "Opening Prayer, National Anthem, Babcock Anthem, Opening Remarks (Dr. Ajibade), overview of objectives, expectations, and judging criteria", tag: "ceremony" },
+  { time: "09:45 \u2013 10:00", title: "Recognition of Dignitaries", desc: "", tag: "ceremony" },
+  { time: "10:00 \u2013 10:15", title: "Program Kickoff & Orientation", desc: "Team Formation & Ideation overview", tag: "logistics" },
+  { time: "10:15 \u2013 10:45", title: "Team Formation & Brainstorming", desc: "Team finalization, participant allocation, and initial idea generation", tag: "hack" },
+  { time: "10:45 \u2013 11:15", title: "Idea Promotion & Special Session", desc: "10 min special presentation followed by 20 min promotions", tag: "keynote" },
+  { time: "11:15 \u2013 13:30", title: "Panel: From Problem to Solution", desc: "Problem definition, idea structuring, innovation strategy, startup insights, and interactive Q&A", tag: "keynote" },
+  { time: "13:30 \u2013 14:30", title: "Lunch Break", desc: "", tag: "break" },
+  { time: "14:30 \u2013 18:30", title: "Mentorship & Solution Development", desc: "Rotational mentorship (~20 mins/team) \u2014 solution development, business model, product viability, pitch preparation", tag: "hack" },
+  { time: "18:30 \u2013 18:45", title: "Day 1 Wrap-Up", desc: "", tag: "logistics" },
+  { time: "20:15 \u2013 22:30", title: "Movie Night", desc: "Networking and relaxation", tag: "social" },
+];
+
+const scheduleDay2 = [
+  { time: "09:00 \u2013 09:15", title: "Arrival", desc: "", tag: "logistics" },
+  { time: "09:15 \u2013 09:30", title: "Welcome Back & Agenda Overview", desc: "", tag: "logistics" },
+  { time: "09:30 \u2013 11:00", title: "Mentorship, Refinement & Practice", desc: "Final solution adjustments, sustainability alignment, integrated pitch rehearsals, and mentor feedback", tag: "hack" },
+  { time: "11:00 \u2013 11:30", title: "Good Harvard Connect", desc: "Engagement and exposure session with strategic insights and networking from Harvard", tag: "keynote" },
+  { time: "11:30 \u2013 11:45", title: "Slide Submission & Tech Check", desc: "Final slide upload and technical setup", tag: "logistics" },
+  { time: "11:45 \u2013 15:15", title: "Final Pitches", desc: "2.5 min presentation + 2.5 min Q&A per team", tag: "pitch" },
+  { time: "15:15 \u2013 15:45", title: "Judges\u2019 Deliberation", desc: "", tag: "ceremony" },
+  { time: "15:45 \u2013 16:00", title: "Awards & Closing Ceremony", desc: "Winners announced, next steps, closing remarks, and group photo", tag: "ceremony" },
+];
+
+const tagLabels = {
+  ceremony: "Ceremony", keynote: "Keynote", hack: "Hacking",
+  social: "Social", break: "Break", logistics: "Logistics", pitch: "Pitches",
+};
+
+function SchedulePage({ onBack }) {
+  return (
+    <div className="schedule-page">
+      <div className="schedule-hero">
+        <div className="schedule-hero-bg" />
+        <div className="section-label" style={{ justifyContent: "center" }}>Official Timetable</div>
+        <h1 className="section-title" style={{ textAlign: "center", fontSize: "clamp(2.2rem, 5vw, 3.5rem)" }}>
+          Event <em>Schedule</em>
+        </h1>
+        <p style={{ color: "var(--muted)", fontSize: "1rem", lineHeight: 1.7, maxWidth: 520, margin: "0 auto 2rem" }}>
+          Two days of intensive innovation at the 7th Annual HSIL Hackathon, April 9\u201310, 2026.
+        </p>
+        <button className="schedule-nav-back" onClick={onBack}>
+          <ArrowLeft size={14} /> Back to Home
+        </button>
+      </div>
+
+      <div className="schedule-days">
+        <div className="schedule-day">
+          <div className="schedule-day-header">
+            <Calendar size={20} />
+            <div>
+              <h3>Day 1</h3>
+              <span>Thursday, April 9</span>
+            </div>
+          </div>
+          <div className="schedule-events">
+            {scheduleDay1.map((evt, i) => (
+              <div className="schedule-event" key={i}>
+                <div className="schedule-event-time">{evt.time}</div>
+                <div className="schedule-event-content">
+                  <h4>{evt.title}</h4>
+                  {evt.desc && <p>{evt.desc}</p>}
+                  <span className={`schedule-event-tag ${evt.tag}`}>{tagLabels[evt.tag]}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="schedule-day">
+          <div className="schedule-day-header">
+            <Calendar size={20} />
+            <div>
+              <h3>Day 2</h3>
+              <span>Friday, April 10</span>
+            </div>
+          </div>
+          <div className="schedule-events">
+            {scheduleDay2.map((evt, i) => (
+              <div className="schedule-event" key={i}>
+                <div className="schedule-event-time">{evt.time}</div>
+                <div className="schedule-event-content">
+                  <h4>{evt.title}</h4>
+                  {evt.desc && <p>{evt.desc}</p>}
+                  <span className={`schedule-event-tag ${evt.tag}`}>{tagLabels[evt.tag]}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="schedule-note">
+        <p>All times are local to your hub. Schedules may vary slightly by location. Contact your local Hub organizer for any hub-specific adjustments.</p>
+        <button className="schedule-nav-back" onClick={onBack} style={{ marginTop: "1.5rem" }}>
+          <ArrowLeft size={14} /> Back to Home
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function ApplicationsClosed({ onBack, onSponsorContact }) {
   return (
     <div className="closed-page">
@@ -724,7 +983,7 @@ function ApplicationsClosed({ onBack, onSponsorContact }) {
           Applications Are<br /><em>Now Closed</em>
         </h1>
         <p className="closed-subtitle">
-          Thank you for your interest in the 7th Annual HSIL Hackathon. The application window for the April 10–11, 2026 event has ended. We received an overwhelming number of submissions from innovators across every continent.
+          Thank you for your interest in the 7th Annual HSIL Hackathon. The application window for the April 9–10, 2026 event has ended. We received an overwhelming number of submissions from innovators across every continent.
         </p>
         <button className="closed-back" onClick={onBack}>
           <ArrowLeft size={16} /> Return to Homepage
@@ -743,7 +1002,7 @@ function ApplicationsClosed({ onBack, onSponsorContact }) {
           <div className="closed-info-card">
             <Clock size={24} />
             <h3>Follow the Event</h3>
-            <p>The hackathon takes place April 10–11, 2026 across global hubs. Follow along on social media for live updates, highlights, and winning announcements.</p>
+            <p>The hackathon takes place April 9–10, 2026 across global hubs. Follow along on social media for live updates, highlights, and winning announcements.</p>
           </div>
           <div className="closed-info-card">
             <BookOpen size={24} />
@@ -942,6 +1201,26 @@ function SponsorContactPage({ onBack }) {
           <p className="sponsor-info-item">Any specific challenge track or visibility request.</p>
           <p className="sponsor-info-item">Primary contact person and availability window.</p>
         </div>
+
+        <div className="donation-panel">
+          <h3>Support the Event Through Donations</h3>
+          <p>
+            Beyond sponsorship tiers, direct donations help us expand participant support, logistics, and the overall quality of the HSIL Hackathon experience.
+            If you'd like to contribute toward making this event a success, you can use the account below.
+          </p>
+          <div className="donation-details">
+            <p><strong>Account Name:</strong> Babcock University Students Entrepreneurship Club</p>
+            <p><strong>Account Number:</strong> 2351614266</p>
+            <p><strong>Bank Name:</strong> UBA</p>
+          </div>
+          <button
+            className="copy-account-btn"
+            onClick={() => fallbackToCopy("2351614266", "BUSEC account number copied.")}
+          >
+            Copy Account Number
+          </button>
+        </div>
+
         <div style={{ marginTop: "1.6rem" }}>
           <a
             href={emailHref}
@@ -983,6 +1262,12 @@ export default function HSILHackathon() {
     setIsMobileMenuOpen(false);
   };
 
+  const openSchedulePage = () => {
+    setActivePage("schedule");
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0 });
+  };
+
   const openSponsorContactPage = () => {
     setActivePage("sponsor-contact");
     setIsMobileMenuOpen(false);
@@ -1014,6 +1299,7 @@ export default function HSILHackathon() {
             <a onClick={() => scrollToSection("program")}>Program</a>
             <a onClick={() => scrollToSection("challenges")}>Challenges</a>
             <a onClick={() => scrollToSection("judging")}>Judging</a>
+            <a onClick={openSchedulePage}>Schedule</a>
             <a onClick={() => scrollToSection("sponsors")}>Sponsors</a>
             <a onClick={openSponsorContactPage}>Sponsor Contact</a>
             <a className="nav-cta" onClick={openClosedPage}>Apply Now</a>
@@ -1034,6 +1320,7 @@ export default function HSILHackathon() {
           <a onClick={() => scrollToSection("program")}>Program</a>
           <a onClick={() => scrollToSection("challenges")}>Challenges</a>
           <a onClick={() => scrollToSection("judging")}>Judging</a>
+          <a onClick={openSchedulePage}>Schedule</a>
           <a onClick={() => scrollToSection("sponsors")}>Sponsors</a>
           <a onClick={openSponsorContactPage}>Sponsor Contact</a>
           <a className="nav-cta" onClick={openClosedPage}>Apply Now</a>
@@ -1062,7 +1349,7 @@ export default function HSILHackathon() {
           </p>
           <div className="hero-meta">
             <div className="hero-stat">
-              <span className="hero-stat-val">Apr 10–11</span>
+              <span className="hero-stat-val">Apr 9–10</span>
               <span className="hero-stat-label">Event Dates, 2026</span>
             </div>
             <div className="hero-divider" />
@@ -1119,9 +1406,14 @@ export default function HSILHackathon() {
         <section className="section" id="program">
           <div className="section-label">Event Program</div>
           <h2 className="section-title">Two Days of<br /><em>Intensive Innovation</em></h2>
+          <p className="section-body" style={{ marginBottom: "1rem" }}>
+            <a onClick={openSchedulePage} style={{ color: "var(--crimson)", cursor: "pointer", textDecoration: "none", fontWeight: 500, display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+              View full detailed schedule <ChevronRight size={14} />
+            </a>
+          </p>
           <div className="program-cols">
             <div>
-              <div className="program-day-label">Day 1 · Friday, April 10</div>
+              <div className="program-day-label">Day 1 · Thursday, April 9</div>
               {day1Events.map((e, i) => (
                 <div className="program-event" key={i}>
                   <div className="program-event-icon"><e.icon size={18} /></div>
@@ -1130,7 +1422,7 @@ export default function HSILHackathon() {
               ))}
             </div>
             <div>
-              <div className="program-day-label">Day 2 · Saturday, April 11</div>
+              <div className="program-day-label">Day 2 · Friday, April 10</div>
               {day2Events.map((e, i) => (
                 <div className="program-event" key={i}>
                   <div className="program-event-icon"><e.icon size={18} /></div>
@@ -1236,8 +1528,8 @@ export default function HSILHackathon() {
         {/* PITCH */}
         <section className="section" id="pitch">
           <div className="section-label">Pitch Structure</div>
-          <h2 className="section-title">3 Minutes.<br /><em>Make It Count.</em></h2>
-          <p className="section-body">Structure your pitch to maximize impact. Practice multiple times before delivering.</p>
+          <h2 className="section-title">2.5 Minutes.<br /><em>Make It Count.</em></h2>
+          <p className="section-body">You have 2.5 minutes to present, followed by 2.5 minutes of Q&A. Structure your pitch to maximize impact.</p>
           <div className="pitch-steps">
             {pitchSteps.map((s, i) => (
               <div className="pitch-step" key={i}>
@@ -1352,7 +1644,7 @@ export default function HSILHackathon() {
             <div>
               <p style={{ fontSize: "0.7rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "1rem" }}>Event</p>
               <p style={{ fontSize: "0.82rem", color: "var(--muted)", lineHeight: 2.2 }}>
-                April 10–11, 2026<br />
+                April 9–10, 2026<br />
                 Global Multi-Hub<br />
                 AI & Health Systems<br />
                 7th Annual Edition
@@ -1392,6 +1684,7 @@ export default function HSILHackathon() {
           </>
         )}
 
+        {activePage === "schedule" && <SchedulePage onBack={goHome} />}
         {activePage === "closed" && <ApplicationsClosed onBack={goHome} onSponsorContact={openSponsorContactPage} />}
         {activePage === "sponsor-contact" && <SponsorContactPage onBack={goHome} />}
 
